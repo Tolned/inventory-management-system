@@ -1,10 +1,11 @@
 """Главный модуль для демонстрации работы системы."""
 
-from category import Category  # ✅ без src.
-from product import Product  # ✅ без src.
+from category import Category
+from product import Product
 
 
 def main() -> None:
+    # Создание товаров
     product1 = Product(
         "Samsung Galaxy S23 Ultra",
         "256GB, Серый цвет, 200MP камера",
@@ -17,10 +18,12 @@ def main() -> None:
     )
 
     print("=== Товары ===")
-    for p in (product1, product2, product3):
-        print(p)
+    print(f"1. {product1.name}: {product1.price} руб., остаток {product1.quantity} шт.")
+    print(f"2. {product2.name}: {product2.price} руб., остаток {product2.quantity} шт.")
+    print(f"3. {product3.name}: {product3.price} руб., остаток {product3.quantity} шт.")
     print()
 
+    # Создание категории с товарами
     category1 = Category(
         "Смартфоны",
         "Смартфоны, как средство не только коммуникации, "
@@ -29,50 +32,51 @@ def main() -> None:
     )
 
     print(f"=== Категория: {category1.name} ===")
-    print(category1.products_display)
-    print(f"Количество товаров: {category1.products_count}")
-    print(f"Общее количество единиц: {category1.total_quantity}")
-    print(f"Общая стоимость: {category1.get_total_value():.2f} руб.")
-    print(f"Средняя цена: {category1.get_average_price():.2f} руб.")
+    print(f"Описание: {category1.description}")
+    print("\nТовары в категории:")
+    print(category1.products)
 
-    most_expensive = category1.get_most_expensive_product()
-    if most_expensive:
-        print(f"Самый дорогой товар: {most_expensive}")
-
-    cheapest = category1.get_cheapest_product()
-    if cheapest:
-        print(f"Самый дешёвый товар: {cheapest}")
-
-    found = category1.get_product_by_name("Iphone 15")
-    if found:
-        print(f"Найден товар: {found}")
+    print(f"Количество категорий: {Category.category_count}")
+    print(f"Общее количество товаров (по единицам): {Category.product_count}")
     print()
 
-    print("=== Удаление товара ===")
-    print(f"До удаления: {category1.products_count} товаров")
-    category1.remove_product(product3)
-    print(f"После удаления: {category1.products_count} товаров")
-    print(
-        f"Общее количество единиц после удаления: "
-        f"{Category.product_count}"
-    )
+    # Демонстрация класс-метода new_product
+    print("=== Создание товара из словаря ===")
+    product_data = {
+        "name": "Новый смартфон",
+        "description": "Тестовый товар",
+        "price": 50000.0,
+        "quantity": 10
+    }
+    new_product = Category.new_product(product_data)
+    print(f"Создан товар: {new_product.name}, цена: {new_product.price} руб.")
     print()
 
+    # Демонстрация сеттера цены
+    print("=== Изменение цены товара ===")
+    print(f"Старая цена {product1.name}: {product1.price} руб.")
+    product1.price = 190000.0
+    print(f"Новая цена {product1.name}: {product1.price} руб.")
+
+    print("\nПопытка установить отрицательную цену:")
+    product1.price = -100.0  # Выведет сообщение об ошибке
+    print(f"Цена осталась: {product1.price} руб.")
+    print()
+
+    # Создание второй категории
     product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
     category2 = Category(
         "Телевизоры",
-        "Современный телевизор, который позволяет наслаждаться "
-        "просмотром, станет вашим другом и помощником",
+        "Современный телевизор, который позволяет наслаждаться просмотром",
         [product4]
     )
 
     print(f"=== Категория: {category2.name} ===")
-    print(category2.products_display)
-    print(f"Общая стоимость: {category2.get_total_value():.2f} руб.\n")
+    print(category2.products)
 
     print("=== Общая статистика ===")
     print(f"Количество категорий: {Category.category_count}")
-    print(f"Общее количество товаров (единиц): {Category.product_count}")
+    print(f"Общее количество товаров (по единицам): {Category.product_count}")
 
 
 if __name__ == "__main__":
