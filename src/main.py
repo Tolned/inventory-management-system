@@ -1,82 +1,95 @@
-"""Главный модуль для демонстрации работы системы."""
+"""Главный модуль для демонстрации работы магазина."""
 
 from category import Category
 from product import Product
 
 
 def main() -> None:
-    # Создание товаров
-    product1 = Product(
-        "Samsung Galaxy S23 Ultra",
-        "256GB, Серый цвет, 200MP камера",
-        180000.0,
-        5
+    """Точка входа в программу."""
+    smartphone = Product(
+        "Samsung Galaxy", "Смартфон с AMOLED экраном", 80000.0, 15
     )
-    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
-    product3 = Product(
-        "Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14
+    laptop = Product(
+        "MacBook Pro", "Ноутбук для профессионалов", 150000.0, 5
+    )
+    tablet = Product(
+        "iPad Air", "Планшет для работы и развлечений", 60000.0, 10
     )
 
-    print("=== Товары ===")
-    print(f"1. {product1.name}: {product1.price} руб., остаток {product1.quantity} шт.")
-    print(f"2. {product2.name}: {product2.price} руб., остаток {product2.quantity} шт.")
-    print(f"3. {product3.name}: {product3.price} руб., остаток {product3.quantity} шт.")
+    print("=== Продукты ===")
+    print(smartphone)
+    print(laptop)
+    print(tablet)
     print()
 
-    # Создание категории с товарами
-    category1 = Category(
-        "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, "
-        "но и получения дополнительных функций для удобства жизни",
-        [product1, product2, product3]
+    electronics = Category(
+        "Электроника",
+        "Устройства и гаджеты",
+        [smartphone, laptop, tablet],
     )
 
-    print(f"=== Категория: {category1.name} ===")
-    print(f"Описание: {category1.description}")
-    print("\nТовары в категории:")
-    print(category1.products)
-
-    print(f"Количество категорий: {Category.category_count}")
-    print(f"Общее количество товаров (по единицам): {Category.product_count}")
+    print("=== Категория ===")
+    print(electronics)
     print()
 
-    # Демонстрация класс-метода new_product
-    print("=== Создание товара из словаря ===")
-    product_data = {
-        "name": "Новый смартфон",
-        "description": "Тестовый товар",
-        "price": 50000.0,
-        "quantity": 10
+    print("=== Список товаров в категории ===")
+    print(electronics.products)
+
+    print("=== Перебор товаров в цикле ===")
+    for product in electronics:
+        print(f"  - {product.name}: {product.price} руб.")
+    print()
+
+    print("=== Демонстрация __add__ ===")
+    pair_value = smartphone + laptop
+    print(f"Стоимость Samsung + MacBook: {pair_value} руб.")
+    print(
+        f"  (Samsung: {smartphone.price} x "
+        f"{smartphone.quantity} = "
+        f"{smartphone.price * smartphone.quantity} руб.)"
+    )
+    print(
+        f"  (MacBook: {laptop.price} x "
+        f"{laptop.quantity} = "
+        f"{laptop.price * laptop.quantity} руб.)"
+    )
+    print()
+
+    print("=== Общая стоимость товаров на складе ===")
+    products = [smartphone, laptop, tablet]
+    total_value = sum(p.price * p.quantity for p in products)
+    print(
+        f"Samsung: {smartphone.price} x "
+        f"{smartphone.quantity} = "
+        f"{smartphone.price * smartphone.quantity} руб."
+    )
+    print(
+        f"MacBook: {laptop.price} x "
+        f"{laptop.quantity} = "
+        f"{laptop.price * laptop.quantity} руб."
+    )
+    print(
+        f"iPad: {tablet.price} x "
+        f"{tablet.quantity} = "
+        f"{tablet.price * tablet.quantity} руб."
+    )
+    print(f"Итого: {total_value} руб.")
+    print()
+
+    print("=== Создание продукта через new_product ===")
+    new_data = {
+        "name": "AirPods Pro",
+        "description": "Беспроводные наушники",
+        "price": 25000.0,
+        "quantity": 30,
     }
-    new_product = Category.new_product(product_data)
-    print(f"Создан товар: {new_product.name}, цена: {new_product.price} руб.")
+    airpods = Category.new_product(new_data)
+    print(airpods)
+
+    electronics.add_product(airpods)
     print()
-
-    # Демонстрация сеттера цены
-    print("=== Изменение цены товара ===")
-    print(f"Старая цена {product1.name}: {product1.price} руб.")
-    product1.price = 190000.0
-    print(f"Новая цена {product1.name}: {product1.price} руб.")
-
-    print("\nПопытка установить отрицательную цену:")
-    product1.price = -100.0  # Выведет сообщение об ошибке
-    print(f"Цена осталась: {product1.price} руб.")
-    print()
-
-    # Создание второй категории
-    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
-    category2 = Category(
-        "Телевизоры",
-        "Современный телевизор, который позволяет наслаждаться просмотром",
-        [product4]
-    )
-
-    print(f"=== Категория: {category2.name} ===")
-    print(category2.products)
-
-    print("=== Общая статистика ===")
-    print(f"Количество категорий: {Category.category_count}")
-    print(f"Общее количество товаров (по единицам): {Category.product_count}")
+    print("=== Категория после добавления AirPods ===")
+    print(electronics)
 
 
 if __name__ == "__main__":
