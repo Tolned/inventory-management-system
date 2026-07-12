@@ -1,8 +1,8 @@
-"""Модуль содержит класс Product для представления товара."""
+"""Модуль содержит классы продуктов: Product, Smartphone, LawnGrass."""
 
 
 class Product:
-    """Класс продукта."""
+    """Базовый класс продукта."""
 
     def __init__(
         self,
@@ -13,9 +13,26 @@ class Product:
     ) -> None:
         self.name = name
         self.description = description
-        # Приватный атрибут с двойным подчёркиванием (name mangling)
         self.__price = price
         self.quantity = quantity
+
+    def __str__(self) -> str:
+        """Строковое представление продукта."""
+        return (
+            f"{self.name}, {self.__price} руб. "
+            f"Остаток: {self.quantity} шт."
+        )
+
+    def __add__(self, other: "Product") -> float:
+        """Сложение двух продуктов одного класса."""
+        if type(self) is not type(other):
+            raise TypeError(
+                "Нельзя складывать товары разных классов"
+            )
+        return (
+            (self.__price * self.quantity)
+            + (other.__price * other.quantity)
+        )
 
     @property
     def price(self) -> float:
@@ -24,8 +41,48 @@ class Product:
 
     @price.setter
     def price(self, value: float) -> None:
-        """Сеттер для приватного атрибута цены с проверкой на положительность."""
+        """Сеттер для приватного атрибута цены."""
         if value <= 0:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             self.__price = value
+
+
+class Smartphone(Product):
+    """Класс смартфона — наследник Product."""
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str,
+    ) -> None:
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Класс газонной травы — наследник Product."""
+
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+        country: str,
+        germination_period: int,
+        color: str,
+    ) -> None:
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
