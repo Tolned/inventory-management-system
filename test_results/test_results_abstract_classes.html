@@ -2,7 +2,7 @@
 <html xmlns:str="http://exslt.org/strings" xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Test Results &mdash; pytest в test_category.py</title>
+        <title>Test Results &mdash; pytest в test_abstract_classes.py</title>
         <style type="text/css">
           html {
             height: 100%
@@ -574,7 +574,7 @@ jQuery.cookie = function(name, value, options) {
             <div id="header">
                 <div class="time" xmlns="">0 ms</div>
                 <h1>
-                    pytest в test_category.py: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">5 total, </span><span class="passed">5 passed</span></strong>
+                    pytest в test_abstract_classes.py: <strong><span class="total" xmlns="http://www.w3.org/1999/xhtml">12 total, </span><span class="passed">12 passed</span></strong>
                 </h1>
                 <div id="treecontrol">
                     <ul>
@@ -599,60 +599,144 @@ jQuery.cookie = function(name, value, options) {
                             <li class="level suite open">
                                 <span><em class="time">
                                         <div class="time">0 ms</div>
-                                    </em>test_category</span>
+                                    </em>test_abstract_classes</span>
                                 <ul>
                                     <li class="level suite open">
                                         <span><em class="time">
                                                 <div class="time">0 ms</div>
-                                            </em>TestCategory</span>
+                                            </em>TestBaseProduct</span>
                                         <ul>
                                             <li class="level test">
                                                 <span><em class="time">
                                                         <div class="time">0 ms</div>
-                                                    </em><em class="status">passed</em>test_category_initialization</span>
+                                                    </em><em class="status">passed</em>test_base_product_is_abstract</span>
                                                 <ul>
                                                     <li class="text">
-                                                        <span class="stdout">PASSED [ 20%]<br/></span>
+                                                        <span class="stdout">PASSED [  8%]<br/></span>
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li class="level test">
                                                 <span><em class="time">
                                                         <div class="time">0 ms</div>
-                                                    </em><em class="status">passed</em>test_category_count_increment</span>
+                                                    </em><em class="status">passed</em>test_product_inherits_base_product</span>
                                                 <ul>
                                                     <li class="text">
-                                                        <span class="stdout">PASSED [ 40%]<br/></span>
+                                                        <span class="stdout">PASSED [ 16%]<br/></span>
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li class="level test">
                                                 <span><em class="time">
                                                         <div class="time">0 ms</div>
-                                                    </em><em class="status">passed</em>test_product_count_increment</span>
+                                                    </em><em class="status">passed</em>test_smartphone_inherits_product</span>
                                                 <ul>
                                                     <li class="text">
-                                                        <span class="stdout">PASSED [ 60%]<br/></span>
+                                                        <span class="stdout">PASSED [ 25%]<br/></span>
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li class="level test">
                                                 <span><em class="time">
                                                         <div class="time">0 ms</div>
-                                                    </em><em class="status">passed</em>test_add_product</span>
+                                                    </em><em class="status">passed</em>test_lawn_grass_inherits_product</span>
                                                 <ul>
                                                     <li class="text">
-                                                        <span class="stdout">PASSED            [ 80%]<br/></span>
+                                                        <span class="stdout">PASSED [ 33%]<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="level suite open">
+                                        <span><em class="time">
+                                                <div class="time">0 ms</div>
+                                            </em>TestInfoMixin</span>
+                                        <ul>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_product_prints_on_creation</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [ 41%]<br/></span>
                                                     </li>
                                                 </ul>
                                             </li>
                                             <li class="level test">
                                                 <span><em class="time">
                                                         <div class="time">0 ms</div>
-                                                    </em><em class="status">passed</em>test_category_statistics</span>
+                                                    </em><em class="status">passed</em>test_smartphone_prints_on_creation</span>
                                                 <ul>
                                                     <li class="text">
-                                                        <span class="stdout">PASSED    [100%]<br/></span>
+                                                        <span class="stdout">PASSED [ 50%]<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_lawn_grass_prints_on_creation</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [ 58%]<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_product_repr_format</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [ 66%]Product('Test', 'Desc', 100.0, 5)<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_smartphone_repr_format</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [ 75%]Smartphone('iPhone', 'Desc', 100000.0, 5, 95.5, 'iPhone 15', 256, 'Чёрный')<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_lawn_grass_repr_format</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [ 83%]LawnGrass('Трава', 'Desc', 500.0, 10, 'Россия', 7, 'Зелёный')<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="level suite open">
+                                        <span><em class="time">
+                                                <div class="time">0 ms</div>
+                                            </em>TestCategoryWithAbstract</span>
+                                        <ul>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_category_with_smartphone</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [ 91%]<br/></span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="level test">
+                                                <span><em class="time">
+                                                        <div class="time">0 ms</div>
+                                                    </em><em class="status">passed</em>test_category_with_lawn_grass</span>
+                                                <ul>
+                                                    <li class="text">
+                                                        <span class="stdout">PASSED [100%]<br/></span>
                                                     </li>
                                                 </ul>
                                             </li>
@@ -666,7 +750,7 @@ jQuery.cookie = function(name, value, options) {
             </div>
         </div>
         <div id="footer">
-            <p>Сгенерировано PyCharm в 18.07.2026, 13:05</p>
+            <p>Сгенерировано PyCharm в 18.07.2026, 13:02</p>
         </div>
     </body>
 </html>
