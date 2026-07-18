@@ -218,13 +218,9 @@ __marimo__/
 # Python
 *.sotest_results/
 
-# Отчеты о покрытии (без коммитов)
+# === Coverage reports (COMMIT these) ===
+# .coverage — игнорируем (бинарный файл)
 .coverage
 
-# Coverage
-htmlcov/
-
-
-# === Отчеты о покрытии (КОММИТИМ) ===
-htmlcov/ — НЕ игнорируем, чтобы коммитить HTML-отчет
-coverage.xml — НЕ игнорируем, чтобы коммитить XML-отчет
+# htmlcov/ — коммитим HTML-отчет
+# coverage.xml — коммитим XML-отчет
