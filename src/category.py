@@ -5,6 +5,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from exceptions import ZeroQuantityException  # noqa: E402
 from product import Product  # noqa: E402
 
 
@@ -77,14 +78,37 @@ class Category:
         return Product(**product_data)
 
     def add_product(self, product: Product) -> None:
-        """Метод добавления продукта с проверкой типа."""
+        """Метод добавления продукта с проверкой типа и количества."""
         if not isinstance(product, Product):
             raise TypeError(
                 "Можно добавлять только объекты класса "
                 "Product или его наследников"
             )
-        self.__products.append(product)
-        Category.product_count += 1
+        try:
+            if product.quantity == 0:
+                raise ZeroQuantityException()
+        except ZeroQuantityException as e:
+            print(f"Ошибка: {e}")
+            raise
+        else:
+            self.__products.append(product)
+            Category.product_count += 1
+            print(f"Товар '{product.name}' успешно добавлен")
+        finally:
+            print("Обработка добавления товара завершена")
+
+    def average_price(self) -> float:
+        """Метод подсчёта среднего ценника всех товаров.
+
+        Возвращает 0, если в категории нет товаров.
+        """
+        try:
+            total_price = sum(
+                product.price for product in self.__products
+            )
+            return total_price / len(self.__products)
+        except ZeroDivisionError:
+            return 0.0
 
     def __iter__(self) -> CategoryIterator:
         """Возвращает итератор для перебора товаров."""

@@ -7,6 +7,7 @@ from typing import Any
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from category import Category  # noqa: E402
+from exceptions import ZeroQuantityException  # noqa: E402
 from product import LawnGrass, Product, Smartphone  # noqa: E402
 
 
@@ -86,6 +87,32 @@ def main() -> None:
             electronics.add_product(invalid)
         except TypeError as e:
             print(f"Ошибка при добавлении {type(invalid).__name__}: {e}")
+
+    print("\n=== Обработка исключений ===")
+    print("\n--- Попытка создать продукт с quantity=0 ---")
+    try:
+        Product("Тест", "Описание", 100.0, 0)
+    except ValueError as e:
+        print(f"Ошибка: {e}")
+
+    print("\n--- Средний ценник товаров ---")
+    print(f"Средний ценник 'Электроника': {electronics.average_price()} руб.")
+    print(f"Средний ценник 'Сад': {garden.average_price()} руб.")
+
+    empty_category = Category("Пустая", "Без товаров")
+    print(f"Средний ценник 'Пустая': {empty_category.average_price()} руб.")
+
+    print("\n--- Пользовательское исключение ZeroQuantityException ---")
+    try:
+        # Создаём продукт в обход __init__, чтобы получить quantity=0
+        bad_product = Product.__new__(Product)  # type: ignore[call-overload]
+        bad_product.name = "Невалидный товар"
+        bad_product.description = "Товар с нулевым количеством"
+        bad_product._Product__price = 100.0
+        bad_product.quantity = 0
+        electronics.add_product(bad_product)
+    except ZeroQuantityException as e:
+        print(f"Перехвачено исключение: {e}")
 
 
 if __name__ == "__main__":  # pragma: no cover

@@ -19,6 +19,10 @@ class Product(InfoMixin, BaseProduct):
         price: float,
         quantity: int,
     ) -> None:
+        if quantity == 0:
+            raise ValueError(
+                "Товар с нулевым количеством не может быть добавлен"
+            )
         self.name = name
         self.description = description
         self.__price = price
@@ -78,12 +82,10 @@ class Smartphone(Product):
         memory: int,
         color: str,
     ) -> None:
-        # СНАЧАЛА присваиваем все атрибуты
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
         self.color = color
-        # ПОТОМ вызываем super() — это вызовет repr() в миксине
         super().__init__(name, description, price, quantity)
 
     def __repr__(self) -> str:
@@ -108,11 +110,9 @@ class LawnGrass(Product):
         germination_period: int,
         color: str,
     ) -> None:
-        # СНАЧАЛА присваиваем все атрибуты
         self.country = country
         self.germination_period = germination_period
         self.color = color
-        # ПОТОМ вызываем super() — это вызовет repr() в миксине
         super().__init__(name, description, price, quantity)
 
     def __repr__(self) -> str:
