@@ -1,6 +1,29 @@
 """Модуль содержит класс Category для представления категории товаров."""
 
-from product import Product
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from product import Product  # noqa: E402
+
+
+class CategoryIterator:
+    """Класс-итератор для перебора товаров категории."""
+
+    def __init__(self, products: list[Product]) -> None:
+        self.__products = products
+        self.__index = 0
+
+    def __iter__(self) -> "CategoryIterator":
+        return self
+
+    def __next__(self) -> Product:
+        if self.__index < len(self.__products):
+            product = self.__products[self.__index]
+            self.__index += 1
+            return product
+        raise StopIteration
 
 
 class Category:
@@ -17,7 +40,6 @@ class Category:
     ) -> None:
         self.name = name
         self.description = description
-        # Приватный атрибут с двойным подчёркиванием (name mangling)
         self.__products: list[Product] = []
 
         Category.category_count += 1
@@ -26,16 +48,28 @@ class Category:
             for product in products:
                 self.add_product(product)
 
+    def __str__(self) -> str:
+        """Строковое представление категории."""
+        total_quantity = sum(
+            product.quantity for product in self.__products
+        )
+        return (
+            f"{self.name}, "
+            f"количество продуктов: {total_quantity} шт."
+        )
+
     @property
     def products(self) -> str:
-        """Геттер, возвращающий строку со всеми продуктами по шаблону."""
-        result: str = ""
-        for product in self.__products:
-            result += (
-                f"{product.name}, {product.price} руб. "
-                f"Остаток: {product.quantity} шт.\n"
-            )
-        return result
+        """Геттер, возвращающий строку со всеми продуктами."""
+        if not self.__products:
+            return ""
+        return "\n".join(
+            str(product) for product in self.__products
+        ) + "\n"
+
+    def get_products_list(self) -> list[Product]:
+        """Возвращает копию списка продуктов для итерации."""
+        return list(self.__products)
 
     @classmethod
     def new_product(cls, product_data: dict) -> Product:
@@ -43,6 +77,15 @@ class Category:
         return Product(**product_data)
 
     def add_product(self, product: Product) -> None:
-        """Метод добавления продукта в приватный список и увеличения счетчика."""
+        """Метод добавления продукта с проверкой типа."""
+        if not isinstance(product, Product):
+            raise TypeError(
+                "Можно добавлять только объекты класса "
+                "Product или его наследников"
+            )
         self.__products.append(product)
         Category.product_count += 1
+
+    def __iter__(self) -> CategoryIterator:
+        """Возвращает итератор для перебора товаров."""
+        return CategoryIterator(self.get_products_list())
