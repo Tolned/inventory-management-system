@@ -1,83 +1,119 @@
-"""Главный модуль для демонстрации работы системы."""
+"""Главный модуль для демонстрации работы магазина."""
 
-from category import Category
-from product import Product
+import os
+import sys
+from typing import Any
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from category import Category  # noqa: E402
+from exceptions import ZeroQuantityException  # noqa: E402
+from product import LawnGrass, Product, Smartphone  # noqa: E402
 
 
 def main() -> None:
-    # Создание товаров
-    product1 = Product(
-        "Samsung Galaxy S23 Ultra",
-        "256GB, Серый цвет, 200MP камера",
-        180000.0,
-        5
+    """Точка входа в программу."""
+    print("=== Создание продуктов (миксин печатает repr) ===")
+    smartphone1 = Smartphone(
+        "iPhone 15 Pro", "Флагман Apple",
+        150000.0, 5, 98.5, "iPhone 15 Pro", 256, "Титан"
     )
-    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
-    product3 = Product(
-        "Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14
+    smartphone2 = Smartphone(
+        "Samsung Galaxy S24", "Флагман Samsung",
+        100000.0, 10, 95.0, "Galaxy S24 Ultra", 512, "Чёрный"
     )
-
-    print("=== Товары ===")
-    print(f"1. {product1.name}: {product1.price} руб., остаток {product1.quantity} шт.")
-    print(f"2. {product2.name}: {product2.price} руб., остаток {product2.quantity} шт.")
-    print(f"3. {product3.name}: {product3.price} руб., остаток {product3.quantity} шт.")
+    grass1 = LawnGrass(
+        "Зелёная трава", "Газонная трава",
+        500.0, 20, "Россия", 7, "Зелёный"
+    )
+    regular_product = Product(
+        "Садовый инвентарь", "Набор инструментов", 3000.0, 10
+    )
     print()
 
-    # Создание категории с товарами
-    category1 = Category(
-        "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, "
-        "но и получения дополнительных функций для удобства жизни",
-        [product1, product2, product3]
+    print("=== Продукты разных типов ===")
+    print(smartphone1)
+    print(smartphone2)
+    print(grass1)
+    print(regular_product)
+    print()
+
+    electronics = Category(
+        "Электроника", "Смартфоны и гаджеты",
+        [smartphone1, smartphone2]
+    )
+    garden = Category(
+        "Сад", "Товары для сада",
+        [grass1, regular_product]
     )
 
-    print(f"=== Категория: {category1.name} ===")
-    print(f"Описание: {category1.description}")
-    print("\nТовары в категории:")
-    print(category1.products)
-
-    print(f"Количество категорий: {Category.category_count}")
-    print(f"Общее количество товаров (по единицам): {Category.product_count}")
+    print("=== Категории ===")
+    print(electronics)
+    print(garden)
     print()
 
-    # Демонстрация класс-метода new_product
-    print("=== Создание товара из словаря ===")
-    product_data = {
-        "name": "Новый смартфон",
-        "description": "Тестовый товар",
-        "price": 50000.0,
-        "quantity": 10
-    }
-    new_product = Category.new_product(product_data)
-    print(f"Создан товар: {new_product.name}, цена: {new_product.price} руб.")
+    print("=== Сложение одинаковых классов ===")
+    print(f"Стоимость смартфонов: {smartphone1 + smartphone2} руб.")
     print()
 
-    # Демонстрация сеттера цены
-    print("=== Изменение цены товара ===")
-    print(f"Старая цена {product1.name}: {product1.price} руб.")
-    product1.price = 190000.0
-    print(f"Новая цена {product1.name}: {product1.price} руб.")
-
-    print("\nПопытка установить отрицательную цену:")
-    product1.price = -100.0  # Выведет сообщение об ошибке
-    print(f"Цена осталась: {product1.price} руб.")
+    print("=== Попытка сложить разные классы ===")
+    try:
+        smartphone1 + grass1
+    except TypeError as e:
+        print(f"Ошибка: {e}")
     print()
 
-    # Создание второй категории
-    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
-    category2 = Category(
-        "Телевизоры",
-        "Современный телевизор, который позволяет наслаждаться просмотром",
-        [product4]
-    )
+    print("=== Проверка наследования ===")
+    from base_product import BaseProduct
+    print(f"Product наследует BaseProduct: "
+          f"{issubclass(Product, BaseProduct)}")
+    print(f"Smartphone наследует Product: "
+          f"{issubclass(Smartphone, Product)}")
+    print(f"LawnGrass наследует Product: "
+          f"{issubclass(LawnGrass, Product)}")
+    print()
 
-    print(f"=== Категория: {category2.name} ===")
-    print(category2.products)
+    print("=== Попытка создать BaseProduct (должна быть ошибка) ===")
+    try:
+        eval("BaseProduct('Test', 'Desc', 100.0, 5)")
+    except TypeError as e:
+        print(f"Ошибка: {e}")
+    print()
 
-    print("=== Общая статистика ===")
-    print(f"Количество категорий: {Category.category_count}")
-    print(f"Общее количество товаров (по единицам): {Category.product_count}")
+    print("=== Защита add_product ===")
+    invalid_items: list[Any] = ["строка", 100, {"name": "A"}]
+    for invalid in invalid_items:
+        try:
+            electronics.add_product(invalid)
+        except TypeError as e:
+            print(f"Ошибка при добавлении {type(invalid).__name__}: {e}")
+
+    print("\n=== Обработка исключений ===")
+    print("\n--- Попытка создать продукт с quantity=0 ---")
+    try:
+        Product("Тест", "Описание", 100.0, 0)
+    except ValueError as e:
+        print(f"Ошибка: {e}")
+
+    print("\n--- Средний ценник товаров ---")
+    print(f"Средний ценник 'Электроника': {electronics.average_price()} руб.")
+    print(f"Средний ценник 'Сад': {garden.average_price()} руб.")
+
+    empty_category = Category("Пустая", "Без товаров")
+    print(f"Средний ценник 'Пустая': {empty_category.average_price()} руб.")
+
+    print("\n--- Пользовательское исключение ZeroQuantityException ---")
+    try:
+        # Создаём продукт в обход __init__, чтобы получить quantity=0
+        bad_product = Product.__new__(Product)  # type: ignore[call-overload]
+        bad_product.name = "Невалидный товар"
+        bad_product.description = "Товар с нулевым количеством"
+        bad_product._Product__price = 100.0
+        bad_product.quantity = 0
+        electronics.add_product(bad_product)
+    except ZeroQuantityException as e:
+        print(f"Перехвачено исключение: {e}")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()
